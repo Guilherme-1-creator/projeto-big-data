@@ -45,6 +45,12 @@ Fonte: https://dadosabertos.tse.jus.br/
 - **Plotly:** construção dos gráficos.
 - **Git e GitHub:** versionamento do projeto.
 
+## Justificativa da escolha do banco de dados
+
+O PostgreSQL foi escolhido por ser um banco de dados relacional adequado ao armazenamento de dados estruturados, como os registros eleitorais disponibilizados pelo TSE. Sua utilização permite organizar as informações em tabelas e realizar consultas SQL para filtrar, agrupar e calcular os indicadores utilizados no dashboard.
+
+Além disso, possui integração com Python por meio do SQLAlchemy e pode ser hospedado em nuvem utilizando o serviço Aiven. A tabela `candidatos_historico` reúne os registros tratados das eleições de 2014, 2018 e 2022, facilitando a comparação dos dados ao longo dos anos.
+
 ## Arquitetura do projeto
 
 O funcionamento está organizado em quatro etapas principais:
@@ -76,7 +82,7 @@ Dashboard - Streamlit
 Gráficos e indicadores
 ```
 
-O Terraform é utilizado para provisionar a infraestrutura do banco de dados na Aiven.
+O projeto também possui arquivos Terraform para definir e automatizar o provisionamento da infraestrutura do banco de dados na Aiven.
 
 ## Estrutura do repositório
 
@@ -99,7 +105,7 @@ projeto-big-data/
 │   ├── variables.tf
 │   └── outputs.tf
 │
-├── .env
+├── .env.example
 ├── .gitignore
 └── requirements.txt
 ```
@@ -249,7 +255,7 @@ As informações de raça/cor e gênero são utilizadas conforme os registros di
 ### 2. Clonar o repositório
 
 ```bash
-git clone URL_DO_REPOSITORIO
+git clone https://github.com/Guilherme-1-creator/projeto-big-data.git
 cd projeto-big-data
 ```
 
@@ -291,6 +297,14 @@ streamlit run dashboard/app.py
 
 O Streamlit disponibilizará o dashboard no navegador.
 
+## Acesso ao dashboard online
+
+O dashboard está publicado na plataforma Streamlit Community Cloud e pode ser acessado pelo link:
+
+[**Acessar dashboard**](https://representatividade-politica-br.streamlit.app/)
+
+A aplicação utiliza o banco PostgreSQL hospedado na Aiven, com as credenciais configuradas nas Secrets do Streamlit.
+
 ## Infraestrutura com Terraform
 
 A pasta `terraform/` contém os arquivos utilizados para provisionar o banco PostgreSQL na Aiven:
@@ -300,6 +314,14 @@ A pasta `terraform/` contém os arquivos utilizados para provisionar o banco Pos
 - `outputs.tf`: disponibilização da URI de conexão do banco como saída sensível.
 
 A variável `aiven_api_token` deve ser fornecida de forma segura durante a execução do Terraform.
+
+## Reprodutibilidade
+
+O projeto foi organizado para permitir sua execução em outros ambientes, desde que sejam configurados os pré-requisitos, as credenciais de acesso ao PostgreSQL e os arquivos CSV utilizados.
+
+A reprodução envolve a configuração da infraestrutura com Terraform, a execução do ETL para processamento e carga dos dados e, por fim, a inicialização do dashboard para consulta dos indicadores.
+
+A validação completa deve ser realizada em um ambiente preparado do zero, verificando o provisionamento do banco de dados, o processamento dos arquivos e a conexão com o dashboard.
 
 ## Considerações finais
 
