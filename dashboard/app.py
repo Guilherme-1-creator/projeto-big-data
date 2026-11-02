@@ -20,13 +20,16 @@ st.set_page_config(
 load_dotenv()
 DATABASE_URL = os.getenv("DATABASE_URL")
 
-if not DATABASE_URL:
-    st.error(
-        "A variável DATABASE_URL não foi encontrada no ficheiro .env. Verifique"
-        " as suas configurações."
-    )
-    st.stop()
+load_dotenv()
 
+DATABASE_URL = st.secrets.get(
+    "DATABASE_URL",
+    os.getenv("DATABASE_URL")
+)
+
+if not DATABASE_URL:
+    st.error("DATABASE_URL não foi configurada.")
+    st.stop()
 
 @st.cache_resource
 def get_database_engine():
